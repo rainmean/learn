@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<!-- 步枪 -->
+    <bean id="pistol" class="com.hwua.springdemo.homework1.Pistol" />
+    <!-- 加农炮 -->
+    <bean id="cannon" class="com.hwua.springdemo.homework1.Cannon" />
+    
+    <!-- 步兵-->
+    <bean id="infantry" class="com.hwua.springdemo.homework1.Infantry">
+    	<!-- 构造注入（通过构造方法注入） -->
+    	<constructor-arg ref="cannon"/><!-- 引用其他的bean -->
+    </bean>
+    <!-- 炮兵-->
+    <bean id="artillery" class="com.hwua.springdemo.homework1.Artillery">
+    	<!-- 构造注入（通过构造方法注入） -->
+    	<constructor-arg ref="pistol"/><!-- 引用其他的bean -->
+    </bean>
+    
+</beans>

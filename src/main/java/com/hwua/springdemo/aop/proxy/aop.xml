@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+	<!-- 基于代理方式实现AOP -->
+	
+    <bean id="human" class="com.hwua.springdemo.aop.proxy.Human" />
+    <bean id="sleepHelper" class="com.hwua.springdemo.aop.proxy.SleepHelper" />
+    <!-- 创建切入点 -->
+    <bean id="sleepPointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut">
+    	<property name="pattern" value=".*sleep"/><!-- .*sleep 是正则表达式，所有以sleep结尾的方法都匹配。 -->
+    </bean>
+    <!-- 通知者（把切入点和要切入的功能联系起来） -->
+    <bean id="sleepAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+    	<property name="advice" ref="sleepHelper"/>
+    	<property name="pointcut" ref="sleepPointcut"/>
+    </bean>
+    <!-- 创建代理，让切入功能发生 -->
+    <bean id="humanProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+    	<property name="target" ref="human"/>
+    	<property name="interceptorNames" value="sleepAdvisor" />
+    	<property name="proxyInterfaces" value="com.hwua.springdemo.aop.proxy.Sleepable" />
+    </bean>
+</beans>

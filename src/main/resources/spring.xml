@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<!-- 1.构造注入（通过构造方法注入） -->
+	<!-- 狗 -->
+    <bean id="dog" class="com.hwua.springdemo.ioc.Dog" />
+    <!-- 猫 -->
+    <bean id="cat" class="com.hwua.springdemo.ioc.Cat" />
+    <!-- 主人 -->
+    <bean id="master" class="com.hwua.springdemo.ioc.Master">
+    	<!-- 构造注入（通过构造方法注入） -->
+    	<constructor-arg value="小红" />
+    	<constructor-arg ref="cat"/><!-- 引用其他的bean -->
+    </bean>
+    <!-- 2.通过set方法注入 -->
+    <bean id="user" class="com.hwua.springdemo.ioc.User">
+    	<property name="id" value="100" />
+    	<property name="username" value="张三疯" />
+    	<property name="password" value="123456" />
+    	<property name="age" value="18" />
+    	<property name="pet" ref="dog" />
+    </bean>
+    
+    <!-- 静态工厂注入 -->
+    <bean id="staticFactory" class="com.hwua.springdemo.ioc.StaticFactory" factory-method="getInstance"/>
+</beans>

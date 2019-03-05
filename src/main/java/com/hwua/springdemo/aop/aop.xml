@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+    <!-- AOP（纯POJO方式） -->
+    <bean id="aspect" class="com.hwua.springdemo.aop.Aspect"></bean>
+    <aop:config>
+    	<!-- 定义切面 -->
+    	<aop:aspect ref="aspect">
+    		<!-- 定义切入点（切入点为Master类的feed方法） -->
+    		<aop:pointcut expression="execution(* com.hwua.springdemo.aop.Master.feed(..))" id="feed"/>
+    		<!-- 前置处理 -->
+    		<aop:before method="call" pointcut-ref="feed"/>
+    		<aop:before method="prepared" pointcut-ref="feed"/>
+    		<!-- 后置处理 -->
+    		<aop:after method="clean" pointcut-ref="feed"/>
+    		<!-- 正常运行完成后处理 -->
+    		<aop:after-returning method="play" pointcut-ref="feed"/>
+    		<!-- 运行出现异常时处理 -->
+    		<aop:after-throwing method="dead" pointcut-ref="feed"/>
+    	</aop:aspect>
+    	<!-- 定义切面（测试环绕处理） -->
+    	<aop:aspect ref="aspect">
+    		<!-- 定义切入点（切入点为Master类的feed方法） -->
+    		<aop:pointcut expression="execution(* com.hwua.springdemo.aop.Master.feed(..))" id="feed2"/>
+    		<!-- 环绕处理（包含了前后处理、异常处理） -->
+    		<aop:around method="arroud" pointcut-ref="feed2"/>
+    	</aop:aspect>
+    </aop:config>
+    
+    <!-- 1.构造注入（通过构造方法注入） -->
+	<!-- 狗 -->
+    <bean id="dog" class="com.hwua.springdemo.aop.Dog" />
+    <!-- 猫 -->
+    <bean id="cat" class="com.hwua.springdemo.aop.Cat" />
+    <!-- 主人 -->
+    <bean id="master" class="com.hwua.springdemo.aop.Master">
+    	<!-- 构造注入（通过构造方法注入） -->
+    	<constructor-arg value="小红" />
+    	<constructor-arg ref="cat"/><!-- 引用其他的bean -->
+    </bean>
+</beans>
